@@ -1,6 +1,6 @@
 # NoSQLite – simple key => value store based on SQLite3
 
-[![Build Status](https://secure.travis-ci.org/mthenw/nosqlite.php.png)](https://travis-ci.org/mthenw/nosqlite.php) [![Latest Stable Version](https://poser.pugx.org/mthenw/nosqlite/v/stable.png)](https://packagist.org/packages/mthenw/nosqlite)
+[![Build Status](https://secure.travis-ci.org/madcoda/nosqlite.php.png)](https://travis-ci.org/madcoda/nosqlite.php)
 
 ## Introduction
 
@@ -20,43 +20,63 @@ Library is fully covered with unit tests.
 ```
 {
     "require": {
-        "mthenw/nosqlite": "*@stable"
+        "madcoda/nosqlite": "dev-master"
+    },
+    "repositories": [
+    {
+        "type": "vcs",
+        "url": "https://github.com/madcoda/nosqlite.php"
     }
+    ]
 }
 ```
 
 ## Usage
 
-1. Create stores' manager (file will be created if not exists)
+Create stores' manager (file will be created if not exists)
 
         $nsql = new NoSQLite\NoSQLite('mydb.sqlite');
-
-2. Get store
-
         $store = $nsql->getStore('movies');
 
-3. Set value in store (key and value max length are [limited by SQLite TEXT datatype](http://sqlite.org/limits.html#max_length))
+Set value in store (key and value max length are [limited by SQLite TEXT datatype](http://sqlite.org/limits.html#max_length))
 
-        $store->set(uniqid(), json_encode(array('title' => 'Good Will Hunting', 'director' => 'Gus Van Sant'));
+        $newId = uniqid();
+        $store->set('doc:'.$newId, json_encode(array('title' => 'Good Will Hunting', 'director' => 'Gus Van Sant'));
 
-4. Get value from store (will be created if not exists)
+Set Typed values
+    
+    // Integer
+    $store->setInt('comment:123:count', 90);
 
-        $store->get('3452345');
+    // Boolean
+    $store->setBoolean('post:123:is_read', true);
+    $store->getBoolean('post:123:is_read');
 
-5.  Get all values
+    // Float
+    $store->setFloat('product:123:price', 49.99);
+
+    // Date
+    $store->setDate('product:123:modified', "2013-01-01 12:00:00");
+    $store->setDate('product:123:modified', "2013-07-01");
+
+Get value from store (will be created if not exists)
+
+        $value = $store->get('doc:3452345');
+
+Get all values
 
         $store->getAll();
 
-6. Delete all values
+Delete all values
 
         $store->deleteAll();
 
-7. Iterate through store (Store implements Iterator interface)
+Iterate through store (Store implements Iterator interface)
 
         foreach($store as $key => $value)
             ...
 
-8. Get number of values in store (Store implements Countable interface)
+Get number of values in store (Store implements Countable interface)
 
         count($store);
 
@@ -64,17 +84,15 @@ Library is fully covered with unit tests.
 
 Tests are written in PHPUnit which is required as a dev package in ```composer.json```. For running test use
 
-    ./vendor/bin/phpunit
-
-or simply
-
+    composer install
     make test
+
 
 ## License
 
 (The MIT License)
 
-Copyright 2013 Maciej Winnicki http://maciejwinnicki.pl
+Copyright 2013 Jason Leung http://madcoda.com
 
 This project is free software released under the MIT/X11 license:
 

@@ -1,15 +1,15 @@
 {
-    "name": "mthenw/nosqlite",
+    "name": "madcoda/nosqlite",
     "type": "library",
     "description": "Simple key => value store based on SQLite3",
     "keywords": ["persistence", "database", "sqlite3"],
-    "homepage": "https://github.com/mthenw/nosqlite.php",
+    "homepage": "https://github.com/madcoda/nosqlite.php",
     "license": "MIT",
     "authors": [
         {
-            "name": "Maciej Winnicki",
-            "email": "maciej.winnicki@gmail.com",
-            "homepage": "http://maciejwinnicki.pl/"
+            "name": "Jason Leung",
+            "email": "jason@madcoda.com",
+            "homepage": "http://madcoda.com/"
         }
     ],
     "require": {

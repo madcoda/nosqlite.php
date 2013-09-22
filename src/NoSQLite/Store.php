@@ -166,12 +166,61 @@ class Store implements \Iterator, \Countable
      */
     public function set($key, $value)
     {
-        if (!is_string($key)) {
-            throw new \InvalidArgumentException('Expected string as key');
+        if(is_array($value) || is_object($val)){
+            throw new \InvalidArgumentException('Object and Array value is not allowed');
         }
+        return $this->_set($key, (string) $value);
+    }
 
+
+    public function setString($key, $value){
         if (!is_string($value)) {
             throw new \InvalidArgumentException('Expected string as value');
+        }
+
+        return $this->_set($key, $value);
+    }
+
+    public function setInt($key, $value){
+        if (!is_int($value)) {
+            throw new \InvalidArgumentException('Expected integer as value');
+        }
+        return $this->_set($key, (string) $value);
+    }
+
+    public function setFloat($key, $value){
+        if (!is_float($value)) {
+            throw new \InvalidArgumentException('Expected float as value');
+        }
+        //return $this->_set($key, sprintf('%f', $value));
+        return $this->_set($key, (string) $value);
+    }
+
+    public function setDouble($key, $value){
+        return $this->setDouble();
+    }
+
+    public function setBoolean($key, $value){
+        if (!is_bool($value)) {
+            throw new \InvalidArgumentException('Expected float as value');
+        }
+        return $this->_set($key, ($value)?'true':'false');
+    }
+
+    public function getBoolean($key){
+        return (bool) $this->get($key);
+    }
+
+    public function setDate($key, $value){
+        $ts = strtotime($value);
+        return $this->_set($key, date('Y-m-d H:i:s', $ts));
+    }
+
+
+    private function _set($key, $value)
+    {
+        if (!is_string($key)) {
+            throw new \InvalidArgumentException('Expected string as key');
         }
 
         if (isset($this->data[$key])) {
@@ -190,6 +239,7 @@ class Store implements \Iterator, \Countable
 
         return $this->data[$key];
     }
+
 
     /**
      * Delete value from store

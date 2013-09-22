@@ -25,7 +25,7 @@ Library is fully covered with unit tests.
     "repositories": [
     {
         "type": "vcs",
-        "url": "https://github.com/madcoda/nosqlite.php"
+        "url": "https://github.com/madcoda/nosqlite.php.git"
     }
     ]
 }

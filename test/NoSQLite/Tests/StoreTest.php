@@ -191,6 +191,23 @@ class StoreTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->store->get($key), $value);
     }
 
+    /**
+     * 
+     * @return void
+     */
+    public function testIncrement(){
+        $times = rand(2, 10); //use randome number to prevent system error
+        $total = 0;
+        for($i=0;$i<$times;$i++){
+            $amount = rand(1, 10);
+            $total += $amount;
+            $this->store->increment('count');
+            $this->store->increment('total', $amount);
+        }
+        $this->assertEquals($this->store->get('count'), $times);
+        $this->assertEquals($this->store->get('total'), $total);
+    }
+
 
     /**
      * Test delete value

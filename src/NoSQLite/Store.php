@@ -216,6 +216,24 @@ class Store implements \Iterator, \Countable
         return $this->_set($key, date('Y-m-d H:i:s', $ts));
     }
 
+    /**
+     * Increment an integer
+     * @param  [type] $key [description]
+     * @return [type]      [description]
+     */
+    public function increment($key, $amount=1){
+        if (!is_int($amount)) {
+            throw new \InvalidArgumentException('Expected integer as amount');
+        }
+        $val = $this->get($key);
+        if(!empty($val) && is_numeric($val)){
+            $val = intval($val, 10);
+            $this->setInt($key, ($val+$amount));
+        }else{
+            $this->setInt($key, $amount);
+        }
+    }
+
 
     private function _set($key, $value)
     {

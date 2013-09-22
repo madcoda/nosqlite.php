@@ -188,7 +188,8 @@ class StoreTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetGetDate($key, $value){
         $this->store->setDate($key, $value);
-        $this->assertEquals($this->store->get($key), $value);
+        $actualDate = date('Y-m-d H:i:s', strtotime($value));
+        $this->assertEquals($this->store->get($key), $actualDate);
     }
 
     /**

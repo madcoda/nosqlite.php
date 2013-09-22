@@ -166,7 +166,7 @@ class Store implements \Iterator, \Countable
      */
     public function set($key, $value)
     {
-        if(is_array($value) || is_object($val)){
+        if(is_array($value) || is_object($value)){
             throw new \InvalidArgumentException('Object and Array value is not allowed');
         }
         return $this->_set($key, (string) $value);
@@ -204,7 +204,7 @@ class Store implements \Iterator, \Countable
         if (!is_bool($value)) {
             throw new \InvalidArgumentException('Expected float as value');
         }
-        return $this->_set($key, ($value)?'true':'false');
+        return $this->setInt($key, ($value)?1:0);
     }
 
     public function getBoolean($key){

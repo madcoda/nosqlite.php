@@ -188,6 +188,10 @@ class Store implements \Iterator, \Countable
         return $this->_set($key, (string) $value);
     }
 
+    public function getInt($key){
+        return (int) $this->get($key);
+    }
+
     public function setFloat($key, $value){
         if (!is_float($value)) {
             throw new \InvalidArgumentException('Expected float as value');
@@ -196,8 +200,19 @@ class Store implements \Iterator, \Countable
         return $this->_set($key, (string) $value);
     }
 
+    public function getFloat(){
+        return (float) $this->get($key);
+    }
+
     public function setDouble($key, $value){
-        return $this->setDouble();
+        if (!is_float($value)) {
+            throw new \InvalidArgumentException('Expected float as value');
+        }
+        return $this->_set($key, (string) $value);
+    }
+
+    public function getDouble($key){
+        return (double) $this->get($key);
     }
 
     public function setBoolean($key, $value){

@@ -41,23 +41,24 @@ Create stores' manager (file will be created if not exists)
 Set value in store (key and value max length are [limited by SQLite TEXT datatype](http://sqlite.org/limits.html#max_length))
 
         $newId = uniqid();
-        $store->set('doc:'.$newId, json_encode(array('title' => 'Good Will Hunting', 'director' => 'Gus Van Sant'));
+        $store->set('doc:'.$newId, 
+                json_encode(array('title' => 'Pacific Rim', 'director' => 'Guillermo del Toro'));
 
 Set Typed values
     
-    // Integer
-    $store->setInt('comment:123:count', 90);
-
-    // Boolean
-    $store->setBoolean('post:123:is_read', true);
-    $store->getBoolean('post:123:is_read');
-
-    // Float
-    $store->setFloat('product:123:price', 49.99);
-
-    // Date
-    $store->setDate('product:123:modified', "2013-01-01 12:00:00");
-    $store->setDate('product:123:modified', "2013-07-01");
+        // Integer
+        $store->setInt('comment:123:count', 90);
+    
+        // Boolean
+        $store->setBoolean('post:123:is_read', true);
+        $store->getBoolean('post:123:is_read');
+    
+        // Float
+        $store->setFloat('product:123:price', 49.99);
+    
+        // Date
+        $store->setDate('product:123:modified', "2013-01-01 12:00:00");
+        $store->setDate('product:123:modified', "2013-07-01");
 
 Get value from store (will be created if not exists)
 

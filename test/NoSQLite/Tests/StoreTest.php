@@ -92,7 +92,7 @@ class StoreTest extends \PHPUnit_Framework_TestCase
      * Test getting and setting value
      *
      * @param string $key   key
-     * @param string $value value
+     * @param mixed $value value
      *
      * @dataProvider validData
      * @return void
@@ -147,6 +147,68 @@ class StoreTest extends \PHPUnit_Framework_TestCase
     {
         $this->store->get($key);
     }
+
+
+    /**
+     * Test getting and setting Int
+     *
+     * @param string $key   key
+     * @param string $value value
+     *
+     * @dataProvider validIntData
+     * @return void
+     */
+    public function testSetGetInt($key, $value){
+        $this->store->setInt($key, $value);
+        $this->assertEquals($this->store->get($key), $value);
+    }
+
+    /**
+     * Test getting and setting Boolean
+     *
+     * @param string $key   key
+     * @param string $value value
+     *
+     * @dataProvider validBooleanData
+     * @return void
+     */
+    public function testSetGetBoolean($key, $value){
+        $this->store->setBoolean($key, $value);
+        $this->assertEquals($this->store->getBoolean($key), $value);
+    }
+
+    /**
+     * Test getting and setting Date
+     *
+     * @param string $key   key
+     * @param string $value value
+     *
+     * @dataProvider validDateData
+     * @return void
+     */
+    public function testSetGetDate($key, $value){
+        $this->store->setDate($key, $value);
+        $actualDate = date('Y-m-d H:i:s', strtotime($value));
+        $this->assertEquals($this->store->get($key), $actualDate);
+    }
+
+    /**
+     * 
+     * @return void
+     */
+    public function testIncrement(){
+        $times = rand(2, 10); //use randome number to prevent system error
+        $total = 0;
+        for($i=0;$i<$times;$i++){
+            $amount = rand(1, 10);
+            $total += $amount;
+            $this->store->increment('count');
+            $this->store->increment('total', $amount);
+        }
+        $this->assertEquals($this->store->get('count'), $times);
+        $this->assertEquals($this->store->get('total'), $total);
+    }
+
 
     /**
      * Test delete value
@@ -213,6 +275,71 @@ class StoreTest extends \PHPUnit_Framework_TestCase
         return array(
             array('key', 'value'),
             array('0', 'value'),
+            array('is_first', true),
+            array('number', PHP_INT_MAX),
+            array('price', 123.45),
+            array('price2', 123.451231237987623748212391293801283901823908102983098190390890),
+            array('array', json_encode(array(1,2,3))),
+        );
+    }
+
+    /**
+     * Data provider - valid int
+     *
+     * @static
+     * @return array
+     */
+    public static function validIntData()
+    {
+        return array(
+            array('key', 100),
+            array('0', 0),
+            array('abc', PHP_INT_MAX),
+        );
+    }
+
+    /**
+     * Data provider - valid data
+     *
+     * @static
+     * @return array
+     */
+    public static function validFloatData()
+    {
+        return array(
+            array('price', 123.45),
+            array('0', 123.45),
+            array('price2', 123.451231237987623748212391293801283901823908102983098190390890),
+        );
+    }
+
+    /**
+     * Data provider - valid data
+     *
+     * @static
+     * @return array
+     */
+    public static function validBooleanData()
+    {
+        return array(
+            array('flag1', true),
+            array('flag2', false),
+            array('0', true),
+        );
+    }
+
+    /**
+     * Data provider - valid data
+     *
+     * @static
+     * @return array
+     */
+    public static function validDateData()
+    {
+        return array(
+            array('last_visit', '2012-06-12 15:00:03'),
+            array('last_login', '2012-06-30'),
+            array('created_date', '1970-01-01'),
         );
     }
 
@@ -226,7 +353,7 @@ class StoreTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(0, 'value'),
-            array('key', 1),
+            array('array', array())
         );
     }
 

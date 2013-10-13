@@ -166,12 +166,94 @@ class Store implements \Iterator, \Countable
      */
     public function set($key, $value)
     {
-        if (!is_string($key)) {
-            throw new \InvalidArgumentException('Expected string as key');
+        if(is_array($value) || is_object($value)){
+            throw new \InvalidArgumentException('Object and Array value is not allowed');
         }
+        return $this->_set($key, (string) $value);
+    }
 
+
+    public function setString($key, $value){
         if (!is_string($value)) {
             throw new \InvalidArgumentException('Expected string as value');
+        }
+
+        return $this->_set($key, $value);
+    }
+
+    public function setInt($key, $value){
+        if (!is_int($value)) {
+            throw new \InvalidArgumentException('Expected integer as value');
+        }
+        return $this->_set($key, (string) $value);
+    }
+
+    public function getInt($key){
+        return (int) $this->get($key);
+    }
+
+    public function setFloat($key, $value){
+        if (!is_float($value)) {
+            throw new \InvalidArgumentException('Expected float as value');
+        }
+        //return $this->_set($key, sprintf('%f', $value));
+        return $this->_set($key, (string) $value);
+    }
+
+    public function getFloat(){
+        return (float) $this->get($key);
+    }
+
+    public function setDouble($key, $value){
+        if (!is_float($value)) {
+            throw new \InvalidArgumentException('Expected float as value');
+        }
+        return $this->_set($key, (string) $value);
+    }
+
+    public function getDouble($key){
+        return (double) $this->get($key);
+    }
+
+    public function setBoolean($key, $value){
+        if (!is_bool($value)) {
+            throw new \InvalidArgumentException('Expected float as value');
+        }
+        return $this->setInt($key, ($value)?1:0);
+    }
+
+    public function getBoolean($key){
+        return (bool) $this->get($key);
+    }
+
+    public function setDate($key, $value){
+        $ts = strtotime($value);
+        return $this->_set($key, date('Y-m-d H:i:s', $ts));
+    }
+
+    /**
+     * Increment an integer
+     * @param  [type] $key [description]
+     * @return [type]      [description]
+     */
+    public function increment($key, $amount=1){
+        if (!is_int($amount)) {
+            throw new \InvalidArgumentException('Expected integer as amount');
+        }
+        $val = $this->get($key);
+        if(!empty($val) && is_numeric($val)){
+            $val = intval($val, 10);
+            $this->setInt($key, ($val+$amount));
+        }else{
+            $this->setInt($key, $amount);
+        }
+    }
+
+
+    private function _set($key, $value)
+    {
+        if (!is_string($key)) {
+            throw new \InvalidArgumentException('Expected string as key');
         }
 
         if (isset($this->data[$key])) {
@@ -190,6 +272,7 @@ class Store implements \Iterator, \Countable
 
         return $this->data[$key];
     }
+
 
     /**
      * Delete value from store
